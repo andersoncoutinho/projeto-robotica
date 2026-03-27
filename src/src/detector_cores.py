@@ -20,7 +20,7 @@ class DetectorCoresNode(Node):
         super().__init__('detector_cores')
 
         self.bridge = CvBridge()
-        self.distancia_seguranca = 2.0
+        self.distancia_seguranca = 1.9
         self.frente_direita = 1000
         self.frente_esquerda = 1000
 
@@ -115,8 +115,8 @@ class DetectorCoresNode(Node):
         centro = n // 2
 
         frente = ranges[centro-12:centro+12]
-        frente_esquerda = ranges[:centro+13]
-        frente_direita = ranges[centro-13:]
+        frente_esquerda = ranges[:centro+12]
+        frente_direita = ranges[centro-12:]
         esquerda = ranges[centro+20:centro+50]
         direita = ranges[centro-50:centro-20]
 
@@ -212,8 +212,8 @@ class DetectorCoresNode(Node):
 	#----------------------------------------------------------- a partir daqui está a lógica de navegação no labirinto
         vel_msg = Twist()
         distancia_seguranca = self.distancia_seguranca # distancia de segurança do lidar
-        speed = 2.1 * min(0.35, 0.375 * self.distancia_frente)
-        erro = min (2.0, 0.985/(self.distancia_frente))
+        speed = 2.1 * min(0.3, 0.345 * self.distancia_frente)
+        erro = min (2.1, 0.985/(self.distancia_frente))
         fator_curva = 0.25
         velocidade_curva = fator_curva * speed
         
@@ -249,13 +249,13 @@ class DetectorCoresNode(Node):
         else: # 'nenhuma' cor detectada
             self.get_logger().info('Procurando cores...')
             if  2.0 < self.distancia_frente <= 3.0:
-                vel_msg.linear.x = 0.4 * speed
+                vel_msg.linear.x = 0.25 * speed
             elif 3.0 < self.distancia_frente <= 3.5:
-                vel_msg.linear.x = 0.45 * speed
+                vel_msg.linear.x = 0.3 * speed
             elif 3.5 < self.distancia_frente <= 4.0:
-                vel_msg.linear.x = 0.6 * speed
+                vel_msg.linear.x = 0.45 * speed
             else:
-                vel_msg.linear.x = speed
+                vel_msg.linear.x = 0.55 * speed
 
             vel_msg.angular.z = 0.00
 
