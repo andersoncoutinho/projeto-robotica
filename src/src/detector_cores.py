@@ -215,7 +215,7 @@ class DetectorCoresNode(Node):
         vel_msg = Twist()
         distancia_seguranca = self.distancia_seguranca # distancia de segurança do lidar
         speed = 2.1 * min(0.35, 0.375 * self.distancia_frente)
-        erro = min (2.0, 0.97/(self.distancia_frente))
+        erro = min (2.0, 0.985/(self.distancia_frente))
         fator_curva = 0.25
         velocidade_curva = fator_curva * speed
         
