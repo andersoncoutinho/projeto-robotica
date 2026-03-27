@@ -114,7 +114,7 @@ class DetectorCoresNode(Node):
 
         centro = n // 2
 
-        frente = ranges[centro-11:centro+11]
+        frente = ranges[centro-12:centro+12]
         frente_esquerda = ranges[:centro+13]
         frente_direita = ranges[centro-13:]
         esquerda = ranges[centro+20:centro+50]
@@ -150,8 +150,6 @@ class DetectorCoresNode(Node):
             return
 
         cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-        # altura, largura, _ = cv_image.shape
-        # roi = cv_image[int(altura*0.6):altura, int(largura*0.3):int(largura*0.7)]
 
         hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
 
