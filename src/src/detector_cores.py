@@ -114,9 +114,9 @@ class DetectorCoresNode(Node):
 
         centro = n // 2
 
-        frente = ranges[centro-14:centro+14]
-        frente_esquerda = ranges[:centro+14]
-        frente_direita = ranges[centro-14:]
+        frente = ranges[centro-11:centro+11]
+        frente_esquerda = ranges[:centro+13]
+        frente_direita = ranges[centro-13:]
         esquerda = ranges[centro+20:centro+50]
         direita = ranges[centro-50:centro-20]
 
@@ -214,24 +214,23 @@ class DetectorCoresNode(Node):
 	#----------------------------------------------------------- a partir daqui está a lógica de navegação no labirinto
         vel_msg = Twist()
         distancia_seguranca = self.distancia_seguranca # distancia de segurança do lidar
-        speed = 2.1 * min(0.35, 0.365 * self.distancia_frente)
-        erro = min (2.0, 1.0/(self.distancia_frente))
+        speed = 2.1 * min(0.35, 0.375 * self.distancia_frente)
+        erro = min (2.0, 0.97/(self.distancia_frente))
         fator_curva = 0.25
         velocidade_curva = fator_curva * speed
         
         if cor_atual == 'vermelho':
             self.get_logger().info('Esquerda! (Cor Vermelha)')
-            vel_msg.linear.x = 0.9*velocidade_curva
+            vel_msg.linear.x = 0.8*velocidade_curva
             vel_msg.angular.z = (0.8/self.distancia_frente)
-
         elif cor_atual == 'verde':
             self.get_logger().info('Direita! (Cor Verde)')
-            vel_msg.linear.x = 0.9*velocidade_curva
-            vel_msg.angular.z = -(0.8/self.distancia_frente)
+            vel_msg.linear.x = velocidade_curva
+            vel_msg.angular.z = -erro
         elif self.frente_esquerda < distancia_seguranca and self.frente_direita > distancia_seguranca:
             self.get_logger().info("Virando para esquerda (mais espaço)")
             vel_msg.linear.x = min(0.3, velocidade_curva)
-            vel_msg.angular.z = (0.8/self.frente_esquerda)
+            vel_msg.angular.z = erro
         elif self.frente_direita < distancia_seguranca and self.frente_esquerda > distancia_seguranca:
             self.get_logger().info("Virando para direita (mais espaço)")
             vel_msg.linear.x = min(0.3, velocidade_curva)
@@ -252,11 +251,11 @@ class DetectorCoresNode(Node):
         else: # 'nenhuma' cor detectada
             self.get_logger().info('Procurando cores...')
             if  2.0 < self.distancia_frente <= 3.0:
-                vel_msg.linear.x = 0.35 * speed
-            elif 3.0 < self.distancia_frente <= 3.5:
                 vel_msg.linear.x = 0.4 * speed
+            elif 3.0 < self.distancia_frente <= 3.5:
+                vel_msg.linear.x = 0.45 * speed
             elif 3.5 < self.distancia_frente <= 4.0:
-                vel_msg.linear.x = 0.5 * speed
+                vel_msg.linear.x = 0.6 * speed
             else:
                 vel_msg.linear.x = speed
 

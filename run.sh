@@ -20,7 +20,7 @@ sleep 1 # Aguarda 1 segundo
 # Aba 1 - Simulation World
 tmux new-window -t $SESSION -n simulation
 tmux send-keys -t $SESSION:1 \
-  "source install/setup.bash && ros2 launch robotics_subject simulation_world.launch.py " C-m
+  "source install/setup.bash && ros2 launch robotics_subject simulation_world.launch.py paused:=true" C-m
 sleep 5 
 
 # Aba 2 - EKF
